@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "sim_types.h"
 
 int main() {
     InitWindow(1280, 720, "SoftLife Sandbox");
