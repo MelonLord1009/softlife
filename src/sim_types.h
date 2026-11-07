@@ -33,6 +33,17 @@ struct Vec2{
         return Vec2{f*x, f*y};
     }
 
+    Vec2& operator*=(float f){
+        x *= f;
+        y *= f;
+        return *this;
+    }
+
+    Vec2 operator/(float f) const{
+        float inv = 1.0f/f;
+        return Vec2{x * inv, y * inv};
+    }
+
     float dot(const Vec2& other) const{
         return (x*other.x)+(y*other.y);
     }
@@ -61,6 +72,9 @@ struct Spring{
 struct World{
     std::vector<Node> nodes;
     std::vector<Spring> springs;
-
     void step(float dt);
+private:
+    void apply_spring_forces();
+    void integrate_nodes(float dt);
+    void resolve_boundaries();
 };
