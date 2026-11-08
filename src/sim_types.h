@@ -61,8 +61,9 @@ struct Node{
     Vec2 pos;
     Vec2 vel;
     Vec2 force;
+    int group_id = 0;
     float mass = 1.0f;
-    float radius = 6.0f;
+    float radius = 5.0f;
 };
 
 struct Spring{
@@ -74,15 +75,28 @@ struct Spring{
 };
 
 struct World{
+    int n_creatures = 0;
     float viscosity = 0.001f;
     std::vector<Node> nodes;
     std::vector<Spring> springs;
+
+    float cell_size = 10.0f;
+    int grid_rows = 1280 / 20;
+    int grid_cols = 720 / 20;
+    std::vector<std::vector<int>> grid;
+
+    World(){
+        grid.resize(grid_cols * grid_rows);
+    }
+
     void step(float dt);
     void spawn_creature(Vec2 center);
 private:
     void apply_spring_forces();
     void apply_fluid_drag();
     void integrate_nodes(float dt);
+    void build_spatial_mesh();
+    void resolve_node_collisions();
     void resolve_boundaries();
     
 };

@@ -9,6 +9,7 @@ int main() {
     World world;
 
     world.spawn_creature({300.0f, 400.0f});
+    world.spawn_creature({600.0f, 100.0f});
 
     int grabbed_node = -1;
 
