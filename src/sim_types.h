@@ -73,6 +73,7 @@ struct World{
     std::vector<Node> nodes;
     std::vector<Spring> springs;
     void step(float dt);
+    void spawn_creature(Vec2 center);
 private:
     void apply_spring_forces();
     void integrate_nodes(float dt);

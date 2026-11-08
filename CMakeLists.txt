@@ -12,5 +12,5 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-add_executable(softlife src/main.cpp)
+add_executable(softlife src/main.cpp src/physics.cpp)
 target_link_libraries(softlife PRIVATE raylib)
