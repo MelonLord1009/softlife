@@ -29,6 +29,10 @@ struct Vec2{
         return *this;
     }
 
+    Vec2 operator-() const{
+        return {-x, -y};
+    }
+
     Vec2 operator*(float f) const{
         return Vec2{f*x, f*y};
     }
@@ -70,12 +74,15 @@ struct Spring{
 };
 
 struct World{
+    float viscosity = 0.001f;
     std::vector<Node> nodes;
     std::vector<Spring> springs;
     void step(float dt);
     void spawn_creature(Vec2 center);
 private:
     void apply_spring_forces();
+    void apply_fluid_drag();
     void integrate_nodes(float dt);
     void resolve_boundaries();
+    
 };

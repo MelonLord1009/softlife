@@ -18,6 +18,15 @@ void World::apply_spring_forces(){
     }
 }
 
+
+void World::apply_fluid_drag(){
+    for(Node& node : nodes){
+        float vel = node.vel.length();
+        Vec2 F_drag = -node.vel * vel * viscosity;
+        node.force += F_drag;
+    }
+}
+
 void World::integrate_nodes(float dt){
     for(Node& node : nodes){
         Vec2 a = node.force/node.mass;
@@ -50,9 +59,11 @@ void World::resolve_boundaries(){
 
 void World::step(float dt){
     apply_spring_forces();
+    apply_fluid_drag();
     integrate_nodes(dt);
     resolve_boundaries();
 }
+
 
 void World::spawn_creature(Vec2 center){
     int start_idx = nodes.size();
