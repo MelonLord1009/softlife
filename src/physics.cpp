@@ -38,6 +38,16 @@ void World::integrate_nodes(float dt){
     }    
 }
 
+void World::actuate_muscles(float dt){
+    global_time += dt;
+    for(Spring& spring : springs){
+        if(spring.amplitude > 0.0f){
+            //+sin(f*t+phi)
+            spring.rest_len = spring.base_len + (std::sin(global_time * spring.frequency) + spring.phase);
+        }
+    }
+}
+
 void World::build_spatial_mesh(){
     for(auto& bucket : grid){
         bucket.clear();
@@ -116,6 +126,7 @@ void World::resolve_boundaries(){
 }
 
 void World::step(float dt){
+    actuate_muscles(dt);
     apply_spring_forces();
     apply_fluid_drag();
     integrate_nodes(dt);
@@ -128,7 +139,7 @@ void World::step(float dt){
 void World::spawn_creature(Vec2 center){
     int start_idx = nodes.size();
     int creature_no = n_creatures++;
-    Node n0; n0.pos = {center.x - 25.0f, center.y - 25.0f}; n0.group_id = n_creatures; n0.vel = {2000.0f, 1500.0f};
+    Node n0; n0.pos = {center.x - 25.0f, center.y - 25.0f}; n0.group_id = n_creatures; 
     Node n1; n1.pos = {center.x + 25.0f, center.y - 25.0f}; n1.group_id = n_creatures; 
     Node n2; n1.pos = {center.x - 25.0f, center.y + 25.0f}; n2.group_id = n_creatures;
     Node n3; n1.pos = {center.x + 25.0f, center.y + 25.0f}; n3.group_id = n_creatures;
@@ -139,8 +150,8 @@ void World::spawn_creature(Vec2 center){
     nodes.push_back(n3);
 
     springs.push_back({start_idx + 0, start_idx + 1, 50.0f, 50.0f, 2.0f}); 
-    springs.push_back({start_idx + 1, start_idx + 3, 50.0f, 50.0f, 2.0f}); 
-    springs.push_back({start_idx + 3, start_idx + 2, 50.0f, 50.0f, 2.0f}); 
-    springs.push_back({start_idx + 2, start_idx + 0, 50.0f, 50.0f, 2.0f}); 
+    // springs.push_back({start_idx + 3, start_idx + 2, 50.0f, 50.0f, 2.0f}); 
+    springs.push_back({start_idx + 1, start_idx + 3, 50.0f, 50.0f, 50.0f, 2.0f, 15.0f, 2.0f, 0.0f});
+    springs.push_back({start_idx + 2, start_idx + 0, 50.0f, 50.0f, 50.0f, 2.0f, 15.0f, 2.0f, 0.0f});
     
 }

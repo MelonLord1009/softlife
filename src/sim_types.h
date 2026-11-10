@@ -69,14 +69,23 @@ struct Node{
 struct Spring{
     int a;
     int b;
+    
     float rest_len;
+    float base_len;
     float stiffness;
     float damping;
+
+    float amplitude = 0.0f;
+    float frequency = 0.0f;
+    float phase = 0.0f;
 };
 
 struct World{
+
+    float global_time = 0.0f;
+
     int n_creatures = 0;
-    float viscosity = 0.001f;
+    float viscosity = 0.0001f;
     std::vector<Node> nodes;
     std::vector<Spring> springs;
 
@@ -91,6 +100,7 @@ struct World{
 
     void step(float dt);
     void spawn_creature(Vec2 center);
+    void actuate_muscles(float dt);
 private:
     void apply_spring_forces();
     void apply_fluid_drag();
